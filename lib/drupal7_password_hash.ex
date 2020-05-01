@@ -7,8 +7,6 @@ defmodule Drupal7PasswordHash do
 
   alias Drupal7PasswordHash.Base
 
-  @max_length Bitwise.bsl(1, 32) - 1
-
   @impl true
   def hash_pwd_salt(password, opts \\ []) do
     Base.hash_pwd_salt(password, opts)
