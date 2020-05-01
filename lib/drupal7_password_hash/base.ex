@@ -36,4 +36,11 @@ defmodule Drupal7PasswordHash.Base do
     h = hash(:sha512, password, salt, count)
     hash_encoded == binary_part(Base64.encode(h), 0, @hash_length)
   end
+
+  def verify_pass(password, h, encoded) when h in ["H", "P"] do
+    <<count_log2::8, salt::binary-size(8), hash_encoded::binary>> = encoded
+    count = Bitwise.bsl 1, Base64.dec64(count_log2)
+    h = hash(:md5, password, salt, count)
+    hash_encoded == binary_part(Base64.encode(h), 0, @hash_length)
+  end
 end
