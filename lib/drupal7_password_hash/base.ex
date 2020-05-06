@@ -21,10 +21,10 @@ defmodule Drupal7PasswordHash.Base do
     end
   end
 
-  def hash_pwd_salt(password, []) do
-    salt = gen_salt()
-    count_log2 = 15
+  def hash_pwd_salt(password, opts) do
+    count_log2 = Keyword.get(opts, :log_rounds, 15)
     count = Bitwise.bsl 1, count_log2
+    salt = gen_salt()
     hash_encoded = Base64.encode(hash(:sha512, password, salt, count))
     settings = "$drupal7$S$" <> <<Base64.enc64(count_log2)>> <> salt
     settings <> binary_part(hash_encoded, 0, @hash_length)
